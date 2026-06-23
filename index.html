@@ -95,42 +95,42 @@
                     <div class="stat-card">
                         <div class="stat-icon physics">⚡</div>
                         <div class="stat-info">
-                            <h3 id="totalExperiments">0</h3>
+                            <h3 id="total-experiments">0</h3>
                             <p>Total Experiments</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon physics">🔭</div>
                         <div class="stat-info">
-                            <h3 id="physicsCount">0</h3>
+                            <h3 id="physics-count">0</h3>
                             <p>Physics</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon chemistry">🧪</div>
                         <div class="stat-info">
-                            <h3 id="chemistryCount">0</h3>
+                            <h3 id="chemistry-count">0</h3>
                             <p>Chemistry</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon biology">🧬</div>
                         <div class="stat-info">
-                            <h3 id="biologyCount">0</h3>
+                            <h3 id="biology-count">0</h3>
                             <p>Biology</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon completed">✅</div>
                         <div class="stat-info">
-                            <h3 id="completedCount">0</h3>
+                            <h3 id="completed-count">0</h3>
                             <p>Completed</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon saved">💾</div>
                         <div class="stat-info">
-                            <h3 id="savedCount">0</h3>
+                            <h3 id="saved-count">0</h3>
                             <p>Saved</p>
                         </div>
                     </div>
@@ -206,11 +206,126 @@
             </section>
 
             <!-- Experiment Detail View -->
-            <section class="view-section" id="experimentDetailView">
-                <button class="back-btn" onclick="showView('experiments')">← Back to Library</button>
+            <section class="view-section" id="experiment-detail-view">
+                <div class="detail-header">
+                    <button class="back-btn" onclick="goBackToList()">← Back to Library</button>
+                    <div class="detail-actions">
+                        <button class="btn btn-secondary" id="saveExperimentBtn">💾 Save</button>
+                        <button class="btn btn-primary" id="startExperimentBtn">▶ Start Experiment</button>
+                    </div>
+                </div>
                 
-                <div class="experiment-detail" id="experimentDetailContent">
-                    <!-- Dynamic content will be loaded here -->
+                <div class="experiment-detail-content">
+                    <div class="detail-main">
+                        <div class="detail-header-info">
+                            <div class="detail-badges">
+                                <span class="category-badge physics" id="detail-category">Physics</span>
+                                <span class="difficulty-badge beginner" id="detail-difficulty">Beginner</span>
+                                <span class="time-badge" id="detail-time">30 minutes</span>
+                                <span class="safety-badge high" id="detail-safety">High Safety</span>
+                            </div>
+                            <h1 class="detail-title" id="detail-title">Experiment Name</h1>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>🎯 Objective</h2>
+                            <p class="detail-objective" id="detail-objective">Objective description here...</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>📚 Theory</h2>
+                            <div class="theory-tabs">
+                                <button class="tab-btn active" data-tab="eli10">ELI10</button>
+                                <button class="tab-btn" data-tab="advanced">Advanced</button>
+                                <button class="tab-btn" data-tab="applications">Applications</button>
+                            </div>
+                            <div class="tab-content active" id="tab-eli10">
+                                <p id="theory-eli10"></p>
+                            </div>
+                            <div class="tab-content" id="tab-advanced">
+                                <p id="theory-advanced"></p>
+                            </div>
+                            <div class="tab-content" id="tab-applications">
+                                <ul id="theory-applications"></ul>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>🧪 Materials Required</h2>
+                            <div class="materials-checklist" id="materials-list"></div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>⚠️ Safety Instructions</h2>
+                            <div class="safety-badges-container" id="safety-badges"></div>
+                            <div class="safety-warnings" id="safety-warnings"></div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>🔬 Variables</h2>
+                            <div class="variables-grid">
+                                <div class="variable-card">
+                                    <h4>Independent</h4>
+                                    <ul id="var-independent"></ul>
+                                </div>
+                                <div class="variable-card">
+                                    <h4>Dependent</h4>
+                                    <ul id="var-dependent"></ul>
+                                </div>
+                                <div class="variable-card">
+                                    <h4>Controlled</h4>
+                                    <ul id="var-controlled"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>🎛️ Parameters</h2>
+                            <div class="parameters-container" id="parameters-container"></div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>📐 Formula</h2>
+                            <div class="formula-box" id="formula-display"></div>
+                            <p class="formula-explanation" id="formula-explanation"></p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>🤖 AI Learning Assistant</h2>
+                            <div class="ai-assistant">
+                                <div class="ai-card">
+                                    <h4>💡 Why Does This Happen?</h4>
+                                    <p id="ai-why"></p>
+                                </div>
+                                <div class="ai-card">
+                                    <h4>🌍 Real-Life Applications</h4>
+                                    <ul id="ai-applications"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>💡 Pro Tips</h2>
+                            <div class="pro-tips" id="pro-tips"></div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>📊 Results & Observations</h2>
+                            <div class="results-container" id="results-container">
+                                <div class="observations-table" id="observations-table"></div>
+                                <div class="results-chart" id="results-chart">
+                                    <canvas id="experimentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-actions-bottom">
+                            <button class="btn btn-primary" id="runSimulationBtn">▶ Run Simulation</button>
+                            <button class="btn btn-secondary" id="takeQuizBtn">📝 Take Quiz</button>
+                            <button class="btn btn-secondary" id="exportReportBtn">📄 Export Report</button>
+                            <button class="btn btn-success" id="completeExperimentBtn">✅ Mark Complete</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
