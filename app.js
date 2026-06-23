@@ -79,10 +79,14 @@ function setupEventListeners() {
     document.getElementById('sidebarToggle')?.addEventListener('click', toggleSidebar);
 
     // Theme Toggle
-    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    const themeSwitch = document.getElementById('themeSwitch');
+    if (themeSwitch) {
+        themeSwitch.addEventListener('change', toggleTheme);
+        themeSwitch.checked = !AppState.darkMode;
+    }
 
     // Search Input
-    document.getElementById('searchInput')?.addEventListener('input', handleSearch);
+    document.getElementById('globalSearch')?.addEventListener('input', handleSearch);
 
     // Filter Buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
