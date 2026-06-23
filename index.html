@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScienceLab Pro – Interactive Virtual Science Laboratory</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🔬</span>
+                    <span class="logo-text">ScienceLab Pro</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-view="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-view="experiments">
+                        <span class="nav-icon">🧪</span>
+                        <span class="nav-text">Experiments</span>
+                    </li>
+                    <li class="nav-item" data-view="notebook">
+                        <span class="nav-icon">📓</span>
+                        <span class="nav-text">Notebook</span>
+                    </li>
+                    <li class="nav-item" data-view="achievements">
+                        <span class="nav-icon">🏆</span>
+                        <span class="nav-text">Achievements</span>
+                    </li>
+                    <li class="nav-item" data-view="json-manager">
+                        <span class="nav-icon">📁</span>
+                        <span class="nav-text">JSON Manager</span>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <span>🌙</span>
+                    <label class="switch">
+                        <input type="checkbox" id="themeSwitch">
+                        <span class="slider"></span>
+                    </label>
+                    <span>☀️</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                    <div class="search-container">
+                        <input type="text" id="globalSearch" placeholder="Search experiments, topics, concepts..." class="search-input">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="avatar">👨‍🔬</div>
+                        <div class="user-info">
+                            <span class="user-name">Student</span>
+                            <span class="user-grade">Grade 10</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <section class="view-section active" id="dashboardView">
+                <div class="section-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to your Virtual Science Laboratory</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon physics">⚡</div>
+                        <div class="stat-info">
+                            <h3 id="totalExperiments">0</h3>
+                            <p>Total Experiments</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon physics">🔭</div>
+                        <div class="stat-info">
+                            <h3 id="physicsCount">0</h3>
+                            <p>Physics</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon chemistry">🧪</div>
+                        <div class="stat-info">
+                            <h3 id="chemistryCount">0</h3>
+                            <p>Chemistry</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon biology">🧬</div>
+                        <div class="stat-info">
+                            <h3 id="biologyCount">0</h3>
+                            <p>Biology</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">✅</div>
+                        <div class="stat-info">
+                            <h3 id="completedCount">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon saved">💾</div>
+                        <div class="stat-info">
+                            <h3 id="savedCount">0</h3>
+                            <p>Saved</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="chart-container">
+                        <h3>Experiment Distribution</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Learning Progress</h3>
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-section">
+                    <h3>Recently Viewed Experiments</h3>
+                    <div class="experiments-grid" id="recentExperiments"></div>
+                </div>
+            </section>
+
+            <!-- Experiments Library View -->
+            <section class="view-section" id="experimentsView">
+                <div class="section-header">
+                    <h1>Experiment Library</h1>
+                    <p>Explore and learn through interactive simulations</p>
+                </div>
+
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label>Category:</label>
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="all">All Categories</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Difficulty:</label>
+                        <select id="difficultyFilter" class="filter-select">
+                            <option value="all">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Grade:</label>
+                        <select id="gradeFilter" class="filter-select">
+                            <option value="all">All Grades</option>
+                            <option value="6">Grade 6</option>
+                            <option value="7">Grade 7</option>
+                            <option value="8">Grade 8</option>
+                            <option value="9">Grade 9</option>
+                            <option value="10">Grade 10</option>
+                            <option value="11">Grade 11</option>
+                            <option value="12">Grade 12</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sort By:</label>
+                        <select id="sortFilter" class="filter-select">
+                            <option value="name">Name</option>
+                            <option value="difficulty">Difficulty</option>
+                            <option value="time">Duration</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="experiments-grid" id="experimentsGrid"></div>
+            </section>
+
+            <!-- Experiment Detail View -->
+            <section class="view-section" id="experimentDetailView">
+                <button class="back-btn" onclick="showView('experiments')">← Back to Library</button>
+                
+                <div class="experiment-detail" id="experimentDetailContent">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Notebook View -->
+            <section class="view-section" id="notebookView">
+                <div class="section-header">
+                    <h1>Observation Notebook</h1>
+                    <p>Record your observations and conclusions</p>
+                </div>
+
+                <div class="notebook-container">
+                    <div class="notebook-sidebar">
+                        <button class="add-note-btn" id="addNoteBtn">+ New Note</button>
+                        <div class="notes-list" id="notesList"></div>
+                    </div>
+                    <div class="notebook-editor">
+                        <input type="text" id="noteTitle" placeholder="Note Title" class="note-title-input">
+                        <textarea id="noteContent" placeholder="Write your observations here..." class="note-content-input"></textarea>
+                        <div class="note-actions">
+                            <button class="btn btn-primary" id="saveNoteBtn">Save Note</button>
+                            <button class="btn btn-secondary" id="deleteNoteBtn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements View -->
+            <section class="view-section" id="achievementsView">
+                <div class="section-header">
+                    <h1>Achievements</h1>
+                    <p>Track your learning milestones</p>
+                </div>
+
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Badges will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- JSON Manager View -->
+            <section class="view-section" id="jsonManagerView">
+                <div class="section-header">
+                    <h1>JSON Manager</h1>
+                    <p>Import, export, and manage experiment data</p>
+                </div>
+
+                <div class="json-manager-container">
+                    <div class="json-actions">
+                        <div class="action-card">
+                            <h3>Import JSON</h3>
+                            <p>Upload experiment batches</p>
+                            <input type="file" id="importJsonFile" accept=".json" style="display:none;">
+                            <button class="btn btn-primary" onclick="document.getElementById('importJsonFile').click()">Choose File</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Export JSON</h3>
+                            <p>Download experiment database</p>
+                            <button class="btn btn-primary" id="exportJsonBtn">Export All</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Validate JSON</h3>
+                            <p>Check structure and errors</p>
+                            <button class="btn btn-primary" id="validateJsonBtn">Validate</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Backup</h3>
+                            <p>Create automatic backup</p>
+                            <button class="btn btn-primary" id="backupBtn">Create Backup</button>
+                        </div>
+                    </div>
+                    
+                    <div class="json-status" id="jsonStatus"></div>
+                    
+                    <div class="json-preview">
+                        <h3>Current Database Statistics</h3>
+                        <div id="dbStats"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Experiment Simulation -->
+    <div class="modal" id="simulationModal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="closeModal('simulationModal')">&times;</button>
+            <div id="simulationContent"></div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="modal" id="quizModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('quizModal')">&times;</button>
+            <div id="quizContent"></div>
+        </div>
+    </div>
+
+    <script src="experiments-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
